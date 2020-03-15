@@ -1,12 +1,12 @@
 import React from "react";
 import { ButtonGroup, Button } from 'react-bootstrap';
 
-const Navbar = ({ navitems }) => {
+const Navbar = ({ navitems, fetchItems }) => {
 
   return (
     <ButtonGroup aria-label="Navigation menu">
       {navitems.map(navitem => (
-        <Button variant="secondary" key={navitem.id}>{navitem.name}</Button>
+        <Button variant="secondary" key={navitem.id} onClick={() => fetchItems(navitem.name.toLowerCase())}>{navitem.name}</Button>
       ))}
     </ButtonGroup>
   );

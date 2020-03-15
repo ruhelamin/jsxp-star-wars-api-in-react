@@ -10,6 +10,8 @@ const App = () => {
 
   const [isLoading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
+
+  // TODO: Fetch available resource names dynamically from the API Root resource.
   const navitems = [
     { id: 1, name: 'Films'},
     { id: 2, name: 'People'},
@@ -18,14 +20,15 @@ const App = () => {
     { id: 5, name: 'Starships'},
     { id: 6, name: 'Vehicles'}
   ];
-  // console.log("navitems", navitems);
 
-  const fetchItems = async () => {
+  const fetchItems = async (resource = 'films') => {
     setLoading(true);
-    // const response = await axios.get(`https://swapi.co/api/${endpoint}`);
-    const response = await axios.get(`https://swapi.co/api/films`);
+    const response = await axios.get(`https://swapi.co/api/${resource}`);
+    // const response = await axios.get(`https://swapi.co/api/films`);
+
     console.log("response", response);
     console.log("response.data.results", response.data.results);
+
     setItems(response.data.results);
     setLoading(false);
   }
@@ -48,16 +51,18 @@ const App = () => {
         </Row>
         <Row>
           <Col className="text-center mb-5">
-            <Navbar navitems={navitems} />
+            <Navbar navitems={navitems} fetchItems={fetchItems} />
           </Col>
         </Row>
         <Row>
-          <Items items={items} isLoading={isLoading} />
+          <Col>
+            <Items items={items} isLoading={isLoading} />
+          </Col>
         </Row>
         <Row>
           <Col>
             <footer className="text-center mt-5 mb-5">
-              This is a simple React app consuming the <a href="https://swapi.co" target="_blank">Star Wars API</a> and displaying data. Star Wars logo is from the official website <a href="https://www.starwars.com" target="_blank">www.starwars.com</a>.
+              This is a simple React app consuming the <a href="https://swapi.co" target="_blank" rel="noopener noreferrer">Star Wars API</a> and displaying data. Star Wars logo is from the official website <a href="https://www.starwars.com" target="_blank" rel="noopener noreferrer">www.starwars.com</a>.
             </footer>          
           </Col>
         </Row>
