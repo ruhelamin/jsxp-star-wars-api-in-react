@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import logo from '../Star_Wars_Logo_Official.png';
 import './App.scss';
-import { Container, Row, Col, CardColumns, Card, Button } from 'react-bootstrap';
+import axios from "axios";
+import Items from "./Items";
+import { Container, Row, Col } from 'react-bootstrap';
 
 const App = () => {
 
+  const [items, setItems] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
+  const fetchItems = async () => {
+    setLoading(true);
+    // const response = await axios.get(`https://swapi.co/api/${endpoint}`);
+    const response = await axios.get(`https://swapi.co/api/films`);
+    console.log("response", response);
+    setItems(response.data.results);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+  
   return (
     <div className="App">
       <Container>
@@ -18,33 +36,9 @@ const App = () => {
           </Col>
         </Row>
         <Row>
-          <Col>
-
-            <CardColumns>
-
-              <Card bg="dark" border="secondary" className="text-center">
-                <Card.Header>Featured</Card.Header>
-                <Card.Body>
-                  <Card.Title>Special title treatment</Card.Title>
-                  <Card.Text>
-                    With supporting text below as a natural lead-in to additional content.
-                  </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
-                  <Card.Text>
-                    <small className="text-muted">Last updated 3 mins ago</small>
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer className="text-muted">2 days ago</Card.Footer>
-              </Card>
-              
-            </CardColumns>
-
-
-
-          </Col>
+          <Items items={items} isLoading={isLoading} />
         </Row>
       </Container>      
-
     </div>
   );
 
